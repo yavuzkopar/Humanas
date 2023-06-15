@@ -10,10 +10,12 @@ public class BoundDetection : MonoBehaviour
         if(IsOutOfRange(transform.position))
         {
             //GameOver
+            Debug.Log("GameOver");
+            CharacterSpawner.Instance.ReSpawn(GetComponentInParent<CharacterManager>());
         }
     }
     bool IsOutOfRange(Vector3 position)
     {
-        return position.x >= 100 || position.x <= 0 || position.x < 0 || position.y < 0;
+        return position.x >= 99 || position.x <= 1 || position.y >= 99 || position.y < 1;
     }
 }
