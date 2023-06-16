@@ -9,8 +9,6 @@ public class JostickArrowRotator : MonoBehaviour
     {
         directionArrow = FindObjectOfType<DirectionArrow>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         transform.up = directionArrow.transform.up;

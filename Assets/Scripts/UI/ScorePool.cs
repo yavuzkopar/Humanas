@@ -17,15 +17,36 @@ public class ScorePool : MonoBehaviour
 
     private void ScorePool_OnFeeded(int score)
     {
-        int total = score * score * 10;
-        Debug.Log("klljlklk");
-        texts[poolIndex].text = total.ToString();
+        int calcualatedScore = CalculateScore(score);
+        ScorePopUp(calcualatedScore);
+        IncreasePool();
+
+        WriteTotalScore(calcualatedScore);
+    }
+
+    private void ScorePopUp(int calcualatedScore)
+    {
+        texts[poolIndex].text = calcualatedScore.ToString();
         texts[poolIndex].gameObject.SetActive(true);
+    }
+
+    private void IncreasePool()
+    {
         poolIndex++;
-        if(poolIndex >3)
-            poolIndex= 0;
-        totalScore += total;
+        if (poolIndex > 9)
+            poolIndex = 0;
+    }
+
+    private static int CalculateScore(int score)
+    {
+        return score * score * 10;
+    }
+
+    private void WriteTotalScore(int current)
+    {
+        totalScore += current;
         totalScoreText.text = totalScore.ToString();
         endGameScoreText.text = "SKOR    " + totalScore.ToString();
+        ScoreGlobal.Instance.GlobalScore += current;
     }
 }

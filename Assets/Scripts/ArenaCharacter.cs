@@ -16,7 +16,11 @@ public class ArenaCharacter : CharacterManager
         health -= 10;
         OnTakeDamage?.Invoke();
         if(health<= 0)
+        {
+            ArenaManager.Instance.WormDie();
             Destroy(gameObject);
+        }
+            
     }
     public void TakeBullet()
     {
@@ -32,8 +36,9 @@ public class ArenaCharacter : CharacterManager
         {
             bulletCount--;
             Transform bulletInstance = Instantiate(bullet);
-            bulletInstance.transform.position = transform.GetChild(1).transform.position + transform.GetChild(1).transform.up;
-            bulletInstance.up = transform.GetChild(1).transform.up;
+            Transform headTransform = transform.GetChild(1);
+            bulletInstance.transform.position = headTransform.position + headTransform.up*1.5f;
+            bulletInstance.up = headTransform.up;
             OnShootBullet?.Invoke(bulletCount);
         }
     }

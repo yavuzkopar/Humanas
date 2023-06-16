@@ -45,8 +45,6 @@ public class HealthCanvas : MonoBehaviour
         characterManager.OnShootBullet -= CharacterManager_OnShootBullet;
         characterManager.OnTakeBullet -= CharacterManager_OnTakeBullet;
     }
-
-    // Update is called once per frame
     void LateUpdate()
     {
         if (head == null) return;

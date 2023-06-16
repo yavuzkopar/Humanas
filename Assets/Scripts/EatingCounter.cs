@@ -21,7 +21,7 @@ public class EatingCounter : MonoBehaviour
     private void EatingCounter_OnFeeded()
     {
         
-        if(timer >0.3f)
+        if(timer >0.1f)
         {
             OnFeeded?.Invoke(eater.currentlyEatingCount());
             timer = 0;

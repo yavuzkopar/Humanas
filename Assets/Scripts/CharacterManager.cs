@@ -8,7 +8,6 @@ public abstract class CharacterManager : MonoBehaviour
     Eater eater;
     bool isEating;
     float growRate;
-    [SerializeField] Transform tail;
     public CharacterSO characterSO;
     public Transform head;
     [SerializeField] Transform body;
@@ -17,37 +16,52 @@ public abstract class CharacterManager : MonoBehaviour
     int foodForGrow;
     void Start()
     {
-
+        
         Transform t = Instantiate(head, transform);
         if (isAi)
         {
-            t.GetComponent<Mover>().enabled = false;
-            t.GetComponent<AIMover>().enabled = true;
-            if (GameManager.Instance.isArena)
-            {
-                bodyCount = 4;
-            }
-            else
-                bodyCount = Random.Range(2, 5);
+            SetAICharacter(t);
         }
         else
         {
-            FindObjectOfType<CameraFollower>().followObject = t;
-            t.GetComponent<Mover>().enabled = true;
-            t.GetComponent<AIMover>().enabled = false;
+            SetPlayerCharacter(t);
         }
         t.GetComponentInChildren<SpriteRenderer>().sprite = characterSO.headSprite;
         for (int i = 0; i < bodyCount; i++)
         {
-            Transform temp = Instantiate(body, transform);
-            temp.GetComponentInChildren<SpriteRenderer>().sprite = characterSO.bodySprite;
-            temp.localPosition = Vector3.down * 2f * i;
+            SetWormBody(i);
         }
         eater = GetComponentInChildren<Eater>();
         eater.OnFeeded += Eater_OnFeeded;
         foodForGrow = 10;
     }
 
+    private void SetWormBody(int i)
+    {
+        Transform temp = Instantiate(body, transform);
+        temp.GetComponentInChildren<SpriteRenderer>().sprite = characterSO.bodySprite;
+        temp.localPosition = Vector3.down * 2f * i;
+    }
+
+    private void SetPlayerCharacter(Transform t)
+    {
+        characterSO = FindObjectOfType<PersistentObject>().selectedCharacter;
+        FindObjectOfType<CameraFollower>().followObject = t;
+        t.GetComponent<Mover>().enabled = true;
+        t.GetComponent<AIMover>().enabled = false;
+    }
+
+    private void SetAICharacter(Transform t)
+    {
+        t.GetComponent<Mover>().enabled = false;
+        t.GetComponent<AIMover>().enabled = true;
+        if (GameManager.Instance.isArena)
+        {
+            bodyCount = 4;
+        }
+        else
+            bodyCount = Random.Range(2, 5);
+    }
 
     private void Eater_OnFeeded()
     {

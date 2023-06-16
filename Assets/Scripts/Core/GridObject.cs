@@ -50,10 +50,6 @@ public class GridObject:IEquatable<GridObject>
             WorldGrid.Instance.emptyGrids.Add(this);
         
     }
-    public bool IsOutOfBound()
-    {
-        return x<0 || x>100 || y<0 || y>100;
-    }
     public bool HasEatable()
     {
         return this.eatable != null;
@@ -76,7 +72,4 @@ public class GridObject:IEquatable<GridObject>
     {
         return HashCode.Combine(x, y);
     }
-
-    //public static bool operator !=(GridObject left, GridObject right) { return left.x != right.x || left.y != right.y; }
-    //public static bool operator == (GridObject left, GridObject right) { return left.x == right.x && left.y == right.y; }
 }

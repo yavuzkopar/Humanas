@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = false;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (isGameOver) return;

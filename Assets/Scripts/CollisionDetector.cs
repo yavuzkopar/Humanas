@@ -12,7 +12,6 @@ public class CollisionDetector : MonoBehaviour,ICollideable
     {
         previousGrid = WorldGrid.Instance.GetGridObject(transform.position);
         previousGrid.AddCollidable(this);
-
         characterManager = GetComponentInParent<CharacterManager>();
     }
     void Update()
@@ -20,28 +19,37 @@ public class CollisionDetector : MonoBehaviour,ICollideable
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, 1, 99), Mathf.Clamp(transform.position.y, 1, 99), 0);
         currentGrid = WorldGrid.Instance.GetGridObject(transform.position);
 
-        if (IsHitted() && !canDo)
-        {
-            canDo = true;
-            Debug.Log("aaaaa");
-            TakeDamage();
-           // currentGrid.collideable.TakeDamage();
-            //CharacterSpawner.Instance.ReSpawn(GetComponentInParent<CharacterManager>());
-            
-           // return;
-        }
+        ChackeDamageTaking();
+        UpdateCurrentGrid();
+    }
 
+    private void UpdateCurrentGrid()
+    {
         if (currentGrid != previousGrid)
         {
             previousGrid.RemoveCollideable();
-            previousGrid = currentGrid;
-
             currentGrid.AddCollidable(this);
+            previousGrid = currentGrid;
         }
-        
-
     }
 
+    private void ChackeDamageTaking()
+    {
+        if (IsHitted() && !canDo)
+        {
+            canDo = true;
+            StartCoroutine(CanTakeDamageAgain());
+
+            Debug.Log("aaaaa");
+            TakeDamage();
+        }
+    }
+
+    IEnumerator CanTakeDamageAgain()
+    {
+        yield return new WaitForSeconds(1);
+        canDo= false;
+    }
     bool IsHitted()
     {
         ICollideable[] onGridControllers = transform.root.GetComponentsInChildren<ICollideable>();
@@ -60,6 +68,7 @@ public class CollisionDetector : MonoBehaviour,ICollideable
 
     public void TakeDamage()
     {
+        if (characterManager == null) return;
         characterManager.TakeDamage();
     }
 }

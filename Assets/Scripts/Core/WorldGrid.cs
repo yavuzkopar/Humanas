@@ -21,10 +21,6 @@ public class WorldGrid : MonoBehaviour
             }
         }
     }
-    void Start()
-    {
-        
-    }
     public GridObject GetGridObject(Vector2 position)
     {
         int x = Mathf.RoundToInt(position.x);

@@ -14,11 +14,8 @@ public class Mover : MonoBehaviour
     void Start()
     {
         joystick = FindObjectOfType<FloatingJoystick>();
-        //    FindObjectOfType<Button>().onClick.AddListener(SpeedUp);
         directionArrow = FindObjectOfType<DirectionArrow>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         Vector2 inputVector = new Vector2(joystick.Horizontal, joystick.Vertical);
@@ -26,21 +23,32 @@ public class Mover : MonoBehaviour
         transform.position += transform.up * Time.deltaTime * speed;
         if (isSpeedUpped)
         {
-            timer += Time.deltaTime;
-            if (timer > 2)
-            {
-                isSpeedUpped = false;
-                timer = 0;
-                speed *= 0.5f;
-            }
+            SpeedUpCountDown(2f);
         }
 
+        SetDirectionArrow(inputVector);
+    }
+
+    private void SpeedUpCountDown(float speedUpTime)
+    {
+        timer += Time.deltaTime;
+        if (timer > speedUpTime)
+        {
+            isSpeedUpped = false;
+            timer = 0;
+            speed *= 0.5f;
+        }
+    }
+
+    private void SetDirectionArrow(Vector2 inputVector)
+    {
         directionArrow.transform.position = transform.position;
         if (inputVector.magnitude > 0f)
             directionArrow.transform.up = inputVector;
         else
             directionArrow.transform.up = transform.up;
     }
+
     public void SpeedUp()
     {
         if (isSpeedUpped) return;
